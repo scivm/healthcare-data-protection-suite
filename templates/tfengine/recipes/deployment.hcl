@@ -65,9 +65,6 @@ schema = {
               default = {
                 description = "Default value of variable."
               }
-              terragrunt_input = {
-                description = "Input value to set in terragrunt.hcl for this var."
-              }
             }
           }
         }
@@ -151,17 +148,6 @@ template "vars" {
 {{if has . "terraform_addons.outputs"}}
 template "outputs" {
   component_path = "../components/terraform/outputs"
-  {{if has . "terraform_addons"}}
-  flatten {
-    key = "terraform_addons"
-  }
-  {{end}}
-}
-{{end}}
-
-{{if get . "enable_terragrunt"}}
-template "terragrunt" {
-  component_path = "../components/terragrunt/leaf"
   {{if has . "terraform_addons"}}
   flatten {
     key = "terraform_addons"

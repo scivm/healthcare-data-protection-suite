@@ -44,7 +44,7 @@ terraform {
 # in the GCP project that hosts the Service Account as well.
 resource "google_project_service" "managed_services" {
   for_each           = toset(var.managed_services)
-  project            = var.project_id
+  project            = module.project.project_id
   service            = each.value
   disable_on_destroy = false
 }

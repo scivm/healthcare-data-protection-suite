@@ -712,27 +712,6 @@ schema = {
   }
 }
 
-template "deployment" {
-  recipe_path = "./deployment.hcl"
-  data = {
-    enable_terragrunt = true
-    terraform_addons = {
-      vars = [{
-        name             = "project_id"
-        type             = "string"
-        terragrunt_input = "$${dependency.project.outputs.project_id}"
-      }]
-      deps = [{
-        name = "project"
-        path = "../project"
-        mock_outputs = {
-          project_id = "mock-project"
-        }
-      }]
-    }
-  }
-}
-
 {{if has . "bastion_hosts"}}
 template "bastion_hosts" {
   component_path = "../components/resources/bastion_hosts"

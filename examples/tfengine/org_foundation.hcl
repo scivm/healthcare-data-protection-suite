@@ -18,6 +18,8 @@ data = {
   parent_type     = "organization" # One of `organization` or `folder`.
   parent_id       = "12345678"
   billing_account = "000-000-000"
+  state_bucket = "example-terraform-state"
+
 
   # Default locations for resources. Can be overridden in individual templates.
   bigquery_location = "us-east1"
@@ -34,35 +36,39 @@ template "devops" {
     # enable_bootstrap_gcs_backend = true
 
     admins_group = "example-org-admins@example.com"
-    state_bucket = "example-terraform-state"
-
     project = {
       project_id = "example-devops"
       owners = [
         "group:example-devops-owners@example.com",
       ]
     }
-    cicd = {
-      github = {
-        owner = "GoogleCloudPlatform"
-        name  = "example"
-      }
-      branch_regex = "^master$"
+  }
+}
 
-      # Prepare and enable default triggers.
-      validate_trigger = {}
-      plan_trigger     = {}
-      apply_trigger    = {}
-      build_viewers = [
-        "group:example-cicd-viewers@example.com",
-      ]
+template "cicd" {
+  recipe_path = "{{$recipes}}/cicd.hcl"
+  data = {
+    project = {
+      project_id = "example-devops"
     }
+    github = {
+      owner = "GoogleCloudPlatform"
+      name  = "example"
+    }
+    branch_regex = "^master$"
+
+    # Prepare and enable default triggers.
+    validate_trigger = {}
+    plan_trigger     = {}
+    apply_trigger    = {}
+    build_viewers = [
+      "group:example-cicd-viewers@example.com",
+    ]
   }
 }
 
 template "audit" {
   recipe_path = "{{$recipes}}/audit.hcl"
-  output_path = "./live"
   data = {
     auditors_group = "example-auditors@example.com"
     project = {
@@ -79,7 +85,6 @@ template "audit" {
 
 template "monitor" {
   recipe_path = "{{$recipes}}/monitor.hcl"
-  output_path = "./live"
   data = {
     project = {
       project_id = "example-monitor"
@@ -92,30 +97,9 @@ template "monitor" {
 
 template "org_policies" {
   recipe_path = "{{$recipes}}/org_policies.hcl"
-  output_path = "./live"
   data = {
     allowed_policy_member_customer_ids = [
       "example_customer_id",
     ]
-  }
-}
-
-# Top level prod folder.
-template "folder_prod" {
-  recipe_path = "{{$recipes}}/folder.hcl"
-  output_path = "./live/prod"
-  data = {
-    display_name = "prod"
-  }
-}
-
-# Prod folder for team 1.
-template "folder_team1" {
-  recipe_path = "{{$recipes}}/folder.hcl"
-  output_path = "./live/prod/team1"
-  data = {
-    parent_type                  = "folder"
-    add_parent_folder_dependency = true
-    display_name                 = "team1"
   }
 }

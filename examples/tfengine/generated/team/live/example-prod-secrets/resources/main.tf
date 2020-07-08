@@ -34,7 +34,7 @@ resource "google_secret_manager_secret" "manual_sql_db_user" {
   provider = google-beta
 
   secret_id = "manual-sql-db-user"
-  project   = var.project_id
+  project   = module.project.project_id
 
   replication {
     automatic = true
@@ -46,7 +46,7 @@ resource "google_secret_manager_secret" "auto_sql_db_password" {
   provider = google-beta
 
   secret_id = "auto-sql-db-password"
-  project   = var.project_id
+  project   = module.project.project_id
 
   replication {
     automatic = true

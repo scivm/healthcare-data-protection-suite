@@ -78,7 +78,7 @@ template "devops" {
 # any deployment can access its value.
 template "project_secrets" {
   recipe_path = "{{$recipes}}/project.hcl"
-  output_path = "./live/example-prod-secrets"
+  output_path = "./example-prod-secrets"
   data = {
     project = {
       project_id = "example-prod-secrets"
@@ -113,7 +113,7 @@ EOF
 # Prod central networks project for team 1.
 template "project_networks" {
   recipe_path = "{{$recipes}}/project.hcl"
-  output_path = "./live/example-prod-networks"
+  output_path = "./example-prod-networks"
   data = {
     project = {
       project_id         = "example-prod-networks"
@@ -194,7 +194,7 @@ EOF
 # Prod central data project for team 1.
 template "project_data" {
   recipe_path = "{{$recipes}}/project.hcl"
-  output_path = "./live/example-prod-data"
+  output_path = "./example-prod-data"
   data = {
     project = {
       project_id = "example-prod-data"
@@ -287,7 +287,7 @@ template "project_data" {
           vars = [{
             name             = "bastion_service_account"
             type             = "string"
-            terragrunt_input = "$${dependency.networks.outputs.bastion_service_account}"
+            # terragrunt_input = "$${dependency.networks.outputs.bastion_service_account}"
           }]
           /* TODO(user): Uncomment and re-run the engine after deploying secrets.
           raw_config = <<EOF
@@ -315,7 +315,7 @@ EOF
 # Prod central apps project for team 1.
 template "project_apps" {
   recipe_path = "{{$recipes}}/project.hcl"
-  output_path = "./live/example-prod-apps"
+  output_path = "./example-prod-apps"
   data = {
     project = {
       project_id = "example-prod-apps"
@@ -363,7 +363,7 @@ template "project_apps" {
 # Prod firebase project for team 1.
 template "project_firebase" {
   recipe_path = "{{$recipes}}/project.hcl"
-  output_path = "./live/example-prod-firebase"
+  output_path = "./example-prod-firebase"
   data = {
     project = {
       project_id = "example-prod-firebase"
